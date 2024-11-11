@@ -62,32 +62,37 @@ Sync:
 		}
 
 		for _, task := range Tasks {
-			updated := false
+			needCreate := true
 			for _, record := range SyncedRecords.Result {
 				// 有则更新
 				if record.Name == task.Name {
-					if record.Content != event.NewIP && record.Type == event.Type {
-						updated = true
-						newReqData := model.PostDNSRecord{
-							Content: event.NewIP,
-							Name:    task.Name,
-							Proxied: task.Proxied,
-							Type:    event.Type,
-							TTL:     task.TTL,
-							Comment: task.Comment,
-						}
-						resp, err := cloudflare.UpdateDNSRecord(newReqData, record.Id)
-						if err != nil {
-							log.Errorf("Failed to update the DNS record/更新DNS记录失败: %v", err)
-						} else if !resp.Success {
-							log.Errorf("Failed to update the DNS record/更新DNS记录失败: %v", resp.Errors)
+					if record.Type == event.Type {
+						// 类型相同
+						if record.Content != event.NewIP {
+							needCreate = false
+							newReqData := model.PostDNSRecord{
+								Content: event.NewIP,
+								Name:    task.Name,
+								Proxied: task.Proxied,
+								Type:    event.Type,
+								TTL:     task.TTL,
+								Comment: task.Comment,
+							}
+							resp, err := cloudflare.UpdateDNSRecord(newReqData, record.Id)
+							if err != nil {
+								log.Errorf("Failed to update the DNS record/更新DNS记录失败: %v", err)
+							} else if !resp.Success {
+								log.Errorf("Failed to update the DNS record/更新DNS记录失败: %v", resp.Errors)
+							} else {
+								log.Printf("Updated the DNS record/更新DNS记录成功: %s -> %s", resp.Result.Name, resp.Result.Content)
+							}
 						} else {
-							log.Printf("Updated the DNS record/更新DNS记录成功: %s -> %s", resp.Result.Name, resp.Result.Content)
+							needCreate = false
 						}
 					}
 				}
 			}
-			if !updated {
+			if needCreate {
 				// 无则添加
 				newReqData := model.PostDNSRecord{
 					Content: event.NewIP,
