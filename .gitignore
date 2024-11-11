@@ -3,3 +3,5 @@ go-c.cmd
 .idea
 logs
 bin
+
+.vscode/

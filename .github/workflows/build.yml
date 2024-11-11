@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [ windows, linux, darwin ]
+        goarch: [ "amd64", "386", "arm", "arm64", "ppc64", "ppc64le", "mips", "mipsle", "mips64", "mips64le", "s390x" , "riscv64" ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.23
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Compile
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          OUTPUT_NAME=cloudflare-ddns
+          if [ "${{ matrix.goos }}" == "windows" ]; then OUTPUT_NAME="${OUTPUT_NAME}.exe"; fi
+          go build -o build/${GOOS}-${GOARCH}/${OUTPUT_NAME} main.go
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: cloudflare-ddns-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: build/${{ matrix.goos }}-${{ matrix.goarch }}/cloudflare-ddns*
+          if-no-files-found: warn
