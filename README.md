@@ -50,4 +50,21 @@ DDNS支持一个轻量的插件系统，可以实现一些功能例如发送邮�
 - 插件仅支持Linux/macOS平台
 - 可参考[插件示例](./plugins/example.go)进行编写
 - 编写完插件后使用build_plugins.sh进行编译，可接文件名指定插件，不指定则编译全部插件
-- 目前预设有一个demo插件和远控nginx重启插件
+
+### 预制插件(需要单独编译)
+- OneBot通知：在IP变动时通过OneBot发送通知
+  配置项
+  ```yaml
+  onebot_instance: http://127.0.0.1:8080
+  onebot_token: xxxxxxxx
+  onebot_user: 12345678
+  ```
+- NginxManager：在IP变动时重启正代服的Nginx
+  配置项
+  ```yaml
+  ssh_host: xxx.xxxx.xxxx
+  ssh_port: "22"
+  ssh_user: root
+  ssh_key_path: /root/.ssh/id_rsa
+  # 暂时不支持密码登录，有需要的自己改
+  ```
