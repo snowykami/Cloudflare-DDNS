@@ -9,7 +9,7 @@ import (
 // 从指定的url获取文本内容
 func GetContent(url string) (string, error) {
 	client := http.Client{
-		Timeout: 10 * time.Second,
+		Timeout: 20 * time.Second,
 	}
 
 	resp, err := client.Get(url)

@@ -4,6 +4,8 @@ import (
 	"Cloudflare-DDNS/cloudflare"
 	"Cloudflare-DDNS/config"
 	"Cloudflare-DDNS/model"
+	"Cloudflare-DDNS/utils"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -44,6 +46,9 @@ Sync:
 
 	// 收到本地变动通知后检查云端记录是否与本地新地址一致
 	for event := range eventChan {
+		for _, plugin := range utils.Plugins {
+			go plugin.OnIPChange(*event)
+		}
 		// 云端更新
 		err := SyncRecords()
 		if err != nil {
