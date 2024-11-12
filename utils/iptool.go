@@ -7,11 +7,16 @@ import (
 
 // 从指定的url获取文本内容
 func GetContent(url string) (string, error) {
-	resp, err := http.Get(url)
+	client := http.Client{
+		Timeout: 10,
+	}
+
+	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err

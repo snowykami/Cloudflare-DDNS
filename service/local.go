@@ -64,9 +64,7 @@ func IPMonitor() {
 					log.Printf("IPv6 remains unchanged/IPv6还是这个: %s\n", currentIPv6)
 				}
 			}
-
 		}
-
 		time.Sleep(time.Duration(config.Config.Duration) * time.Second)
 	}
 }
