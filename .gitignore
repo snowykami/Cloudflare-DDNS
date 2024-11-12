@@ -5,3 +5,5 @@ logs
 bin
 
 .vscode/
+
+local_build.sh

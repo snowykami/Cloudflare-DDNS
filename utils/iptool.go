@@ -1,14 +1,15 @@
 package utils
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
+	"time"
 )
 
 // 从指定的url获取文本内容
 func GetContent(url string) (string, error) {
 	client := http.Client{
-		Timeout: 10,
+		Timeout: 10 * time.Second,
 	}
 
 	resp, err := client.Get(url)
@@ -17,7 +18,7 @@ func GetContent(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}

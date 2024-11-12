@@ -17,13 +17,7 @@ func IPMonitor() {
 	if config.EnableIPv6 {
 		log.Println("IPv6 is enabled. IPv6已在DDNS启用")
 	}
-	var currentIPv4, currentIPv6 string
-	if config.EnableIPv4 {
-		currentIPv4, _ = utils.GetCurrentIpv4()
-	}
-	if config.EnableIPv6 {
-		currentIPv6, _ = utils.GetCurrentIpv6()
-	}
+	var currentIPv4, currentIPv6 string = "127.0.0.1", "::1"
 
 	// Get the current IP address
 	for {
