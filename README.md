@@ -1,6 +1,10 @@
 语言Language [zh_CN](README.md) | [EN](README_EN.md)
 ## Cloudflare DDNS
 Cloudflare-DDNS 是一个动态域名解析服务的程序，使用Cloudflare的API进行域名解析到服务器IP记录的更新，基于第4版接口。
+- 支持IPv4和IPv6
+- 有轻量级的动态链接库插件系统，可以随意扩展功能
+- 适用于HomeLab和家庭网络环境
+
 ### 使用前须知
 1. 首先确保你要有公网IP
 
@@ -32,6 +36,7 @@ ddns: # 你的域名记录，此处可以添加多条记录，一个子域名可
     ttl: 60
     proxied: false
     comment: "DDNS auto update"
+... 其他插件配置
 ```
 
 ### 一些建议
@@ -45,3 +50,4 @@ DDNS支持一个轻量的插件系统，可以实现一些功能例如发送邮�
 - 插件仅支持Linux/macOS平台
 - 可参考[插件示例](./plugins/example.go)进行编写
 - 编写完插件后使用build_plugins.sh进行编译，可接文件名指定插件，不指定则编译全部插件
+- 目前预设有一个demo插件和远控nginx重启插件

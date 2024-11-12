@@ -9,3 +9,5 @@ bin
 local_build.sh
 
 plugins/**.so
+
+data/

@@ -25,6 +25,8 @@ type BaseConfig struct {
 
 var Config *BaseConfig
 
+var KeyValue = make(map[string]any)
+
 var (
 	EnableIPv4 bool = false
 	EnableIPv6 bool = false
@@ -58,6 +60,22 @@ func NewConfig() BaseConfig {
 		},
 	}
 	return config
+}
+
+func Get(key string) string {
+	if value, ok := KeyValue[key]; ok {
+		return value.(string)
+	} else {
+		return ""
+	}
+}
+
+func GetWithDefault(key string, defaultValue string) string {
+	if value, ok := KeyValue[key]; ok {
+		return value.(string)
+	} else {
+		return defaultValue
+	}
 }
 
 func init() {
@@ -122,6 +140,10 @@ func ReadConfig() (string, error) {
 	err = yaml.Unmarshal(file, &Config)
 	if err != nil {
 		return "Unmarshal config file error. 配置文件反序列化错误。", err
+	}
+	err = yaml.Unmarshal(file, &KeyValue)
+	if err != nil {
+		return "Unmarshal config file error. 动态配置文件反序列化错误。", err
 	}
 	return "Read config file successfully. 读取配置文件成功。", nil
 }

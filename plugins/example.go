@@ -2,7 +2,6 @@ package main
 
 import (
 	"Cloudflare-DDNS/model"
-
 	"github.com/sirupsen/logrus"
 )
 
