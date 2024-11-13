@@ -49,7 +49,7 @@ Sync:
 		for _, plugin := range utils.Plugins {
 			go plugin.OnIPChange(*event)
 		}
-		// 云端更新
+		// 每次执行前先从云端更新记录到本地
 		err := SyncRecords()
 		if err != nil {
 			log.Errorf("Failed to sync the records from the cloud/从远端同步记录失败: %v", err)
@@ -117,7 +117,5 @@ Sync:
 				}
 			}
 		}
-		// 每次事件处理后同步一次云端记录
-
 	}
 }
