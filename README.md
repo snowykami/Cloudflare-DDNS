@@ -63,7 +63,7 @@ DDNS支持一个轻量的插件系统，可以实现一些功能例如发送邮�
   onebot_token: xxxxxxxx
   onebot_user: 12345678
   ```
-- NginxManager：在IP变动时重启正代服的Nginx
+- NginxManager：在IP变动时重启反代服务的Nginx
   配置项
   ```yaml
   ssh_host: xxx.xxxx.xxxx
